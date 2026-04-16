@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  
+  --color-primary: #FC8019;
+  --color-primary-hover: #E37316;
+  --color-primary-light: #fff3ea;
+  
+  --color-sidebar: #1C1C2E;
+  --color-sidebar-hover: #2A2A42;
+  --color-sidebar-text: #A0A3B1;
+  --color-sidebar-active: #FC8019;
+  
+  --color-main: #F4F6F9;
+  --color-card: #FFFFFF;
+  
+  --color-success: #22C55E;
+  --color-success-bg: #dcfce7;
+  --color-warning: #F59E0B;
+  --color-warning-bg: #fef3c7;
+  --color-danger: #EF4444;
+  --color-danger-bg: #fee2e2;
+}
+
+body {
+  background-color: var(--color-main);
+  color: #334155;
+  font-family: var(--font-sans);
+}
+
+/* Base modal slide-in animation */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.slide-in-right {
+  animation: slideInRight 0.3s ease-out forwards;
+}
+
+/* Custom Webkit Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8;
+}
