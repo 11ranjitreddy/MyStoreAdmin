@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, Plus, List, Grid, Edit, Trash2, Image as ImageIcon } from 'lucide-react';
+import { Search, Plus, List, Grid, Edit, Trash2, Image as ImageIcon, X } from 'lucide-react';
 import Drawer from '../components/Drawer';
 
 const mockProducts = Array.from({ length: 24 }).map((_, i) => ({
@@ -15,16 +15,28 @@ export default function Products() {
   const [viewMode, setViewMode] = useState('grid');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('All');
+  const [imagePreview, setImagePreview] = useState(null);
 
   const categories = ['All', 'Staples', 'Dairy', 'Snacks', 'Beverages'];
   const filtered = activeTab === 'All' ? mockProducts : mockProducts.filter(p => p.category === activeTab);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const removeImage = () => {
+    setImagePreview(null);
+  };
 
   return (
     <div className="max-w-7xl mx-auto space-y-6">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Products & Inventory</h1>
         <button 
-          onClick={() => setIsDrawerOpen(true)}
+          onClick={() => { setIsDrawerOpen(true); setImagePreview(null); }}
           className="flex items-center px-4 py-2 bg-[#FC8019] border border-transparent text-white rounded-xl hover:bg-[#E37316] shadow-lg shadow-[#FC8019]/25 transition-all font-semibold text-sm"
         >
           <Plus className="w-4 h-4 mr-2" />
@@ -156,9 +168,31 @@ export default function Products() {
         <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
           <div className="space-y-1">
             <label className="text-xs font-bold text-gray-700 uppercase tracking-wide">Image Upload</label>
-            <div className="border-2 border-dashed border-gray-200 rounded-2xl p-6 flex flex-col items-center justify-center text-gray-500 hover:border-[#FC8019]/50 hover:bg-[#FC8019]/5 transition-all cursor-pointer">
-              <ImageIcon className="w-8 h-8 mb-2 text-gray-400" />
-              <p className="text-sm text-center">Click or drag image to upload</p>
+            <div className="relative border-2 border-dashed border-gray-200 rounded-2xl p-6 flex flex-col items-center justify-center overflow-hidden hover:border-[#FC8019]/50 hover:bg-[#FC8019]/5 transition-all text-center">
+              {imagePreview ? (
+                <>
+                  <img src={imagePreview} alt="Preview" className="w-full h-40 object-cover rounded-lg" />
+                  <button 
+                    type="button" 
+                    onClick={removeImage}
+                    className="absolute top-2 right-2 p-1 bg-red-100 text-red-600 rounded-full shadow hover:bg-red-200 transition-colors z-10"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </>
+              ) : (
+                <>
+                  <input 
+                    type="file" 
+                    accept="image/*" 
+                    onChange={handleImageChange}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                  />
+                  <ImageIcon className="w-8 h-8 mb-2 text-gray-400" />
+                  <p className="text-sm text-gray-500 font-medium">Click or drag image to upload</p>
+                  <p className="text-xs text-gray-400 mt-1">PNG, JPG, up to 3MB</p>
+                </>
+              )}
             </div>
           </div>
           
